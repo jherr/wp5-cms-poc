@@ -2,17 +2,12 @@ import React from "react";
 import { useQuery } from "react-query";
 
 import Page from "./Page";
-
-function fetchPage(_, { page }) {
-  return new Promise((resolve) => {
-    fetch(`http://localhost:8080/api/${page}`)
-      .then((resp) => resp.json())
-      .then(resolve);
-  });
-}
+import { fetchPage } from "./api";
 
 const EmbedPage = ({ page }) => {
-  const { data } = useQuery(["getPage", { page }], fetchPage);
+  const { data } = useQuery(["getPage", { page }], (_, args) =>
+    fetchPage(_, args, "http://localhost:8080")
+  );
   return data ? <Page {...data} /> : null;
 };
 

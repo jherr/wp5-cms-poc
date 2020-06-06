@@ -64,6 +64,7 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: [".jsx", ".js", ".json"],
   },
+
   module: {
     rules: [
       {
@@ -77,6 +78,10 @@ module.exports = (env, argv) => ({
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.(png|svg|jpg|gif|woff|ttf|woff2|eot)$/,
+        use: ["file-loader"],
+      },
     ],
   },
   plugins: [
@@ -88,8 +93,9 @@ module.exports = (env, argv) => ({
       exposes: {
         Page: "./src/Page",
         EmbedPage: "./src/EmbedPage",
+        EmbedEditor: "./src/EmbedEditor",
       },
-      shared: ["react", "antd", "react-query"],
+      shared: ["react", "react-query", "semantic-ui-react"],
     }),
     new HtmlWebPackPlugin({
       template: "./src/index.html",
