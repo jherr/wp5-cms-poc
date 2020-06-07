@@ -5,9 +5,11 @@ import Page from "./Page";
 import { fetchPage } from "./api";
 
 const EmbedPage = ({ page }) => {
-  const { data } = useQuery(["getPage", { page }], (_, args) =>
-    fetchPage(_, args, "http://localhost:8080")
+  const { data } = useQuery(
+    ["getPage", { page }, { host: "http://localhost:8080" }],
+    fetchPage
   );
+  console.log(["embedPage", page]);
   return data ? <Page {...data} /> : null;
 };
 

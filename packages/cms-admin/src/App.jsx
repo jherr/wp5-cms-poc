@@ -17,7 +17,10 @@ import { fetchPage, postPage } from "./api";
 
 const PageAdmin = ({}) => {
   let { pageId } = useParams();
-  const { data } = useQuery(["getPage", { page: pageId }], fetchPage);
+  const { data } = useQuery(
+    ["getPage", { page: pageId }, { host: "" }],
+    fetchPage
+  );
   const [state, setState] = React.useState({});
   const [mutate] = useMutation(postPage);
 

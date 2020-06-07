@@ -5,13 +5,12 @@ import Editor from "./Editor";
 import { fetchPage, postPage } from "./api";
 
 const PageAdmin = ({ page }) => {
-  const { data } = useQuery(["getPage", { page }], (_, args) =>
-    fetchPage(_, args, "http://localhost:8080")
+  const { data } = useQuery(
+    ["getPage", { page }, { host: "http://localhost:8080" }],
+    fetchPage
   );
   const [state, setState] = React.useState({});
-  const [mutate] = useMutation((data) =>
-    postPage(data, "http://localhost:8080")
-  );
+  const [mutate] = useMutation({ host: "http://localhost:8080" });
 
   React.useEffect(() => {
     setState(data);
