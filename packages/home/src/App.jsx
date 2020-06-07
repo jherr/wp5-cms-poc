@@ -14,26 +14,26 @@ const EmbedPage = React.lazy(() => import("admin/EmbedPage"));
 const EmbedEditor = React.lazy(() => import("admin/EmbedEditor"));
 
 const Page = () => {
-  const { pageId } = useParams();
+  const { page } = useParams();
   return (
     <React.Suspense fallback={<div>Loading</div>}>
-      <EmbedPage page={pageId} />
+      <EmbedPage page={page} />
     </React.Suspense>
   );
 };
 
 const Editor = () => {
-  const { pageId } = useParams();
+  const { page } = useParams();
   return (
     <React.Suspense fallback={<div>Loading</div>}>
-      <EmbedEditor page={pageId} />
+      <EmbedEditor page={page} />
     </React.Suspense>
   );
 };
 
 const PageTitle = () => {
-  const { pageId } = useParams();
-  return <h1 style={{ color: "white" }}>Home Page: {pageId}</h1>;
+  const { page } = useParams();
+  return <h1 style={{ color: "white" }}>Home Page: {page}</h1>;
 };
 
 const App = () => {
@@ -52,7 +52,7 @@ const App = () => {
               <Route path="/" exact>
                 <h1 style={{ color: "white" }}>Home Page</h1>
               </Route>
-              <Route path="/:pageId">
+              <Route path="/:page">
                 <PageTitle />
               </Route>
             </Header>
@@ -60,7 +60,7 @@ const App = () => {
         </Menu>
         <Container style={{ paddingTop: "7em" }}>
           <Switch>
-            <Route path="/:pageId">
+            <Route path="/:page">
               <Button
                 onClick={() => editModeSet(!editMode)}
                 style={{ marginBottom: "1em" }}
