@@ -5,9 +5,9 @@ const Datastore = require("nedb");
 const db = new Datastore({ filename: "pages.db" });
 db.loadDatabase();
 
-module.exports = (env, argv) => ({
+module.exports = () => ({
   devServer: {
-    setup: function (app, server) {
+    before: function (app) {
       const bodyParser = require("body-parser");
       app.use(bodyParser.json());
       app.use(require("cors")());
@@ -15,9 +15,9 @@ module.exports = (env, argv) => ({
       app.post("/api/:page", function (req, res) {
         const page = req.params.page;
 
-        db.find({ _id: page }, (_, docs) => {
-          if (docs.length > 0) {
-            db.update({ _id: page }, { $set: req.body }, {}, (err) => {
+        db.find({ _id: page }, (err, docs) => {
+          if (!err && docs.length > 0) {
+            db.update({ _id: page }, { $set: req.body }, {}, () => {
               res.json({ record: "updated" });
             });
           } else {
@@ -26,7 +26,7 @@ module.exports = (env, argv) => ({
                 _id: page,
                 ...req.body,
               },
-              (err) => {
+              () => {
                 res.json({ record: "inserted" });
               }
             );
@@ -36,10 +36,10 @@ module.exports = (env, argv) => ({
       app.get("/api/:page", function (req, res) {
         const page = req.params.page;
         db.find({ _id: page }, (err, docs) => {
-          if (!err || docs.length) {
+          if (!err) {
             res.json(docs[0] || {});
           } else {
-            res.json({ custom: req.params });
+            res.json({ error: `error getting ${page}` });
           }
         });
       });
